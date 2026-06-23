@@ -306,8 +306,7 @@ textarea {
 }
 
 .hero-car-image {
-  padding: 10px;
-  object-position: center center;
+  object-position: center 38%;
   filter: saturate(0.96) contrast(1.05);
 }
 
@@ -316,29 +315,52 @@ textarea {
 }
 
 .hero-visual {
-  margin-top: -36px;
+  margin-top: -90px;
   animation: visualFloat 9s ease-in-out infinite alternate;
 }
 
 .hero-card {
   transform: translateY(0);
   transition:
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 360ms ease,
     box-shadow 360ms ease,
     filter 360ms ease;
-  animation: heroCardDrift 6.8s ease-in-out infinite alternate;
+  animation: heroCardDrift 7.6s ease-in-out infinite alternate;
 }
 
-.hero-card:hover {
-  animation: none;
-  border-color: rgba(139, 196, 255, 0.34);
-  filter: saturate(108%);
-  transform: translateY(-12px) scale(1.01);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 38px 110px rgba(0, 0, 0, 0.5),
-    0 0 110px rgba(47, 140, 255, 0.18);
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.12), transparent 18%, rgba(255, 255, 255, 0.04) 34%, transparent 52%),
+    linear-gradient(225deg, rgba(139, 196, 255, 0.08), transparent 34%);
+  opacity: 0.8;
+}
+
+.hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  mix-blend-mode: screen;
+}
+
+.hero-image-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.14), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 24%);
+  mix-blend-mode: screen;
 }
 
 .card-hover {
@@ -497,10 +519,10 @@ textarea {
 
 @keyframes heroCardDrift {
   from {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
   to {
-    transform: translateY(7px);
+    transform: translateY(5px);
   }
 }
 

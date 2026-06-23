@@ -475,8 +475,8 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="hero-visual relative"
           >
-            <div className="hero-card glass chrome-frame relative overflow-hidden rounded-[28px] p-3">
-              <div className="hero-image-stage relative aspect-[4/5] overflow-hidden rounded-[22px] md:aspect-[5/4]">
+            <div className="hero-card glass chrome-frame relative overflow-hidden rounded-[30px] p-2.5">
+              <div className="hero-image-stage relative aspect-[4/5] overflow-hidden rounded-[24px] md:aspect-[5/4]">
                 <Image
                   src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=90"
                   alt="Премиальный автомобиль после обслуживания"
@@ -484,9 +484,9 @@ export default function Home() {
                   unoptimized
                   priority
                   sizes="(max-width: 1024px) 100vw, 48vw"
-                  className="hero-car-image object-contain"
+                  className="hero-car-image object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#05070b] via-[#05070b]/22 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05070b]/78 via-[#05070b]/18 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 rounded-3xl border border-white/12 bg-[#070b12]/78 p-4 backdrop-blur-xl">
                   <div className="flex items-center justify-between gap-4">
                     <div>
