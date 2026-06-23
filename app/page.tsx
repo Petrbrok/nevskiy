@@ -299,6 +299,22 @@ function BurgerIcon({ open }: { open: boolean }) {
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLElement | null>(null);
+  const [navPill, setNavPill] = useState({ left: 0, width: 0, opacity: 0 });
+
+  function moveNavPill(node: HTMLAnchorElement) {
+    const parent = navRef.current;
+    if (!parent) return;
+
+    const parentRect = parent.getBoundingClientRect();
+    const nodeRect = node.getBoundingClientRect();
+
+    setNavPill({
+      left: nodeRect.left - parentRect.left,
+      width: nodeRect.width,
+      opacity: 1
+    });
+  }
 
   return (
     <main className="page-shell min-h-[100dvh] overflow-hidden text-white">
@@ -314,9 +330,27 @@ export default function Home() {
             </span>
           </a>
 
-          <nav className="hidden items-center gap-7 text-sm text-white/68 lg:flex">
+          <nav
+            ref={navRef}
+            className="liquid-nav relative hidden items-center gap-2 rounded-full p-1 text-sm text-white/68 lg:flex"
+            onMouseLeave={() => setNavPill((value) => ({ ...value, opacity: 0 }))}
+          >
+            <span
+              className="liquid-nav-pill"
+              style={{
+                opacity: navPill.opacity,
+                transform: `translateX(${navPill.left}px)`,
+                width: navPill.width
+              }}
+            />
             {nav.map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="transition hover:text-white">
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onMouseEnter={(event) => moveNavPill(event.currentTarget)}
+                onFocus={(event) => moveNavPill(event.currentTarget)}
+                className="liquid-nav-link relative z-10 rounded-full px-4 py-2 transition hover:text-white focus-visible:text-white focus-visible:outline-none"
+              >
                 {item}
               </a>
             ))}
@@ -441,7 +475,7 @@ export default function Home() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="hero-visual relative"
           >
-            <div className="glass chrome-frame relative overflow-hidden rounded-[28px] p-3">
+            <div className="hero-card glass chrome-frame relative overflow-hidden rounded-[28px] p-3">
               <div className="hero-image-stage relative aspect-[4/5] overflow-hidden rounded-[22px] md:aspect-[5/4]">
                 <Image
                   src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=90"
