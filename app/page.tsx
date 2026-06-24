@@ -301,12 +301,33 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLElement | null>(null);
   const [navPill, setNavPill] = useState({ left: 0, width: 0, opacity: 0 });
+  const scrollFrameRef = useRef<number | null>(null);
 
   function scrollToTarget(hash: string) {
     const id = hash.replace(/^#/, "");
+    if (scrollFrameRef.current !== null) {
+      window.cancelAnimationFrame(scrollFrameRef.current);
+      scrollFrameRef.current = null;
+    }
 
     if (!id) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const start = window.scrollY;
+      const duration = 650;
+      const startTime = performance.now();
+
+      const step = (time: number) => {
+        const progress = Math.min((time - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        window.scrollTo(0, start * (1 - eased));
+
+        if (progress < 1) {
+          scrollFrameRef.current = window.requestAnimationFrame(step);
+        } else {
+          scrollFrameRef.current = null;
+        }
+      };
+
+      scrollFrameRef.current = window.requestAnimationFrame(step);
       return;
     }
 
@@ -315,8 +336,24 @@ export default function Home() {
 
     const headerOffset = 96;
     const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+    const start = window.scrollY;
+    const distance = top - start;
+    const duration = 700;
+    const startTime = performance.now();
 
-    window.scrollTo({ top, behavior: "smooth" });
+    const step = (time: number) => {
+      const progress = Math.min((time - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      window.scrollTo(0, start + distance * eased);
+
+      if (progress < 1) {
+        scrollFrameRef.current = window.requestAnimationFrame(step);
+      } else {
+        scrollFrameRef.current = null;
+      }
+    };
+
+    scrollFrameRef.current = window.requestAnimationFrame(step);
   }
 
   function moveNavPill(node: HTMLAnchorElement) {
