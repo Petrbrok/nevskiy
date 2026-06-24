@@ -302,6 +302,23 @@ export default function Home() {
   const navRef = useRef<HTMLElement | null>(null);
   const [navPill, setNavPill] = useState({ left: 0, width: 0, opacity: 0 });
 
+  function scrollToTarget(hash: string) {
+    const id = hash.replace(/^#/, "");
+
+    if (!id) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const headerOffset = 96;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+
   function moveNavPill(node: HTMLAnchorElement) {
     const parent = navRef.current;
     if (!parent) return;
@@ -320,7 +337,14 @@ export default function Home() {
     <main className="page-shell min-h-[100dvh] overflow-hidden text-white">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#03050a]/78 shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-2xl">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <a href="#" className="group flex items-center gap-3">
+          <a
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              scrollToTarget("#");
+            }}
+            className="group flex items-center gap-3"
+          >
             <span className="brand-mark grid size-11 place-items-center rounded-2xl text-lg font-semibold text-white">
               Н
             </span>
@@ -347,6 +371,10 @@ export default function Home() {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToTarget(`#${item.toLowerCase()}`);
+                }}
                 onMouseEnter={(event) => moveNavPill(event.currentTarget)}
                 onFocus={(event) => moveNavPill(event.currentTarget)}
                 className="liquid-nav-link relative z-10 rounded-full px-4 py-2 transition hover:text-white focus-visible:text-white focus-visible:outline-none"
@@ -404,7 +432,11 @@ export default function Home() {
                 <a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setOpen(false);
+                    scrollToTarget(`#${item.toLowerCase()}`);
+                  }}
                   className="rounded-2xl border border-white/10 px-4 py-3 text-sm text-white/76"
                 >
                   {item}
